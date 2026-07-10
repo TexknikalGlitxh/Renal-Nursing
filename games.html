@@ -1,624 +1,819 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-  <title>Interactive Games | Renal Nursing Learning Hub</title>
+    <meta
+        name="description"
+        content="Interactive renal nursing games and clinical learning activities."
+    >
 
-  <style>
-    :root {
-      --navy: #0f2f3d;
-      --dark-teal: #164e63;
-      --teal: #0f766e;
-      --light-teal: #dff5f2;
-      --background: #f4f8fa;
-      --white: #ffffff;
-      --text: #243b53;
-      --muted: #627d98;
-      --border: #d9e2ec;
-      --sidebar-width: 250px;
-      --shadow: 0 14px 35px rgba(15, 47, 61, 0.12);
-    }
+    <title>Interactive Games | Renal Learning Hub</title>
 
-    * {
-      box-sizing: border-box;
-    }
+    <link rel="stylesheet" href="styles.css">
 
-    html {
-      scroll-behavior: smooth;
-    }
+    <style>
+        /*
+            Page-specific styles for games.html.
+            These styles build on your existing styles.css.
+        */
 
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--background);
-      color: var(--text);
-    }
+        .games-hero {
+            position: relative;
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+            min-height: 520px;
+            overflow: hidden;
+            background:
+                radial-gradient(
+                    circle at 82% 24%,
+                    rgba(255, 255, 255, 0.18),
+                    transparent 24%
+                ),
+                linear-gradient(
+                    135deg,
+                    #123b46 0%,
+                    #176775 55%,
+                    #27938f 100%
+                );
+            color: #ffffff;
+        }
 
-    /* Sidebar navigation */
+        .games-hero-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 80px clamp(30px, 7vw, 100px);
+        }
 
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: var(--sidebar-width);
-      height: 100vh;
-      padding: 28px 20px;
-      background: linear-gradient(
-        180deg,
-        var(--navy),
-        var(--dark-teal)
-      );
-      color: var(--white);
-      overflow-y: auto;
-      z-index: 1000;
-    }
+        .games-hero .eyebrow {
+            color: #bceee8;
+        }
 
-    .brand {
-      margin-bottom: 34px;
-    }
+        .games-hero h1 {
+            max-width: 760px;
+            margin: 0 0 24px;
+            font-size: clamp(2.8rem, 6vw, 5rem);
+            line-height: 1.05;
+            letter-spacing: -0.04em;
+        }
 
-    .brand-icon {
-      width: 54px;
-      height: 54px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 14px;
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.12);
-      font-size: 2rem;
-    }
+        .games-hero h1 span {
+            display: block;
+            color: #bceee8;
+        }
 
-    .brand h1 {
-      margin: 0 0 6px;
-      font-size: 1.35rem;
-      line-height: 1.25;
-    }
+        .games-hero-description {
+            max-width: 660px;
+            margin: 0;
+            color: rgba(255, 255, 255, 0.84);
+            font-size: 1.08rem;
+            line-height: 1.75;
+        }
 
-    .brand p {
-      margin: 0;
-      color: #c7e7ea;
-      font-size: 0.85rem;
-      line-height: 1.5;
-    }
+        .games-hero-visual {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 50px;
+        }
 
-    .nav-links {
-      display: flex;
-      flex-direction: column;
-      gap: 9px;
-    }
+        .detective-emblem {
+            width: min(340px, 80%);
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.24);
+            border-radius: 50%;
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255, 255, 255, 0.16),
+                    rgba(255, 255, 255, 0.04) 60%,
+                    transparent 61%
+                );
+            box-shadow:
+                0 28px 70px rgba(0, 0, 0, 0.18),
+                inset 0 0 50px rgba(255, 255, 255, 0.06);
+        }
 
-    .nav-links a {
-      display: block;
-      padding: 13px 14px;
-      border-radius: 10px;
-      color: #e8f7f8;
-      text-decoration: none;
-      font-weight: 600;
-      transition:
-        background 0.2s ease,
-        transform 0.2s ease;
-    }
+        .detective-emblem svg {
+            width: 58%;
+            height: 58%;
+            fill: none;
+            stroke: #d7f5f1;
+            stroke-width: 5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
 
-    .nav-links a:hover {
-      background: rgba(255, 255, 255, 0.12);
-      transform: translateX(3px);
-    }
+        .games-library {
+            padding: 90px clamp(24px, 6vw, 90px);
+            background: #f5f8f7;
+        }
 
-    .nav-links a.active {
-      background: var(--white);
-      color: var(--navy);
-    }
+        .games-library .section-heading {
+            margin-bottom: 42px;
+        }
 
-    /* Main layout */
+        .games-library .section-heading > p {
+            max-width: 630px;
+        }
 
-    .main-content {
-      margin-left: var(--sidebar-width);
-      min-height: 100vh;
-    }
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(290px, 1fr)
+            );
+            gap: 28px;
+        }
 
-    /* Banner */
+        .game-card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
+            overflow: hidden;
+            border: 1px solid rgba(18, 59, 70, 0.1);
+            border-radius: 24px;
+            background: #ffffff;
+            box-shadow: 0 18px 50px rgba(18, 59, 70, 0.08);
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease;
+        }
 
-    .page-banner {
-      min-height: 310px;
-      display: flex;
-      align-items: center;
-      padding: 60px 7%;
-      background:
-        linear-gradient(
-          120deg,
-          rgba(15, 47, 61, 0.95),
-          rgba(15, 118, 110, 0.82)
-        ),
-        radial-gradient(
-          circle at top right,
-          rgba(255, 255, 255, 0.14),
-          transparent 40%
-        );
-      color: var(--white);
-    }
+        .game-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 26px 60px rgba(18, 59, 70, 0.14);
+        }
 
-    .banner-content {
-      max-width: 760px;
-    }
+        .game-card-visual {
+            position: relative;
+            min-height: 230px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background:
+                radial-gradient(
+                    circle at 75% 20%,
+                    rgba(255, 255, 255, 0.22),
+                    transparent 28%
+                ),
+                linear-gradient(
+                    135deg,
+                    #123b46,
+                    #1b7180 60%,
+                    #2a9993
+                );
+        }
 
-    .eyebrow {
-      display: inline-block;
-      margin-bottom: 14px;
-      padding: 7px 12px;
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.1);
-      font-size: 0.78rem;
-      font-weight: bold;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
+        .game-card-visual::before,
+        .game-card-visual::after {
+            content: "";
+            position: absolute;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+        }
 
-    .page-banner h2 {
-      margin: 0 0 16px;
-      font-size: clamp(2.3rem, 5vw, 4rem);
-      line-height: 1.1;
-    }
+        .game-card-visual::before {
+            width: 190px;
+            height: 190px;
+        }
 
-    .page-banner p {
-      max-width: 670px;
-      margin: 0;
-      color: #dcf5f3;
-      font-size: 1.08rem;
-      line-height: 1.7;
-    }
+        .game-card-visual::after {
+            width: 260px;
+            height: 260px;
+        }
 
-    /* Games section */
+        .game-card-visual svg {
+            position: relative;
+            z-index: 1;
+            width: 110px;
+            height: 110px;
+            fill: none;
+            stroke: #e1faf6;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
 
-    .games-section {
-      width: min(1180px, 90%);
-      margin: 0 auto;
-      padding: 55px 0 70px;
-    }
+        .game-card-number {
+            position: absolute;
+            top: 18px;
+            right: 20px;
+            z-index: 2;
+            color: rgba(255, 255, 255, 0.72);
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+        }
 
-    .section-heading {
-      margin-bottom: 30px;
-    }
+        .game-card-content {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            padding: 28px;
+        }
 
-    .section-heading h2 {
-      margin: 0 0 10px;
-      color: var(--navy);
-      font-size: 2rem;
-    }
+        .game-category {
+            align-self: flex-start;
+            margin-bottom: 16px;
+            padding: 7px 11px;
+            border-radius: 999px;
+            background: #e5f5f2;
+            color: #176d6b;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
 
-    .section-heading p {
-      max-width: 720px;
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.65;
-    }
+        .game-card h3 {
+            margin: 0 0 14px;
+            color: #123b46;
+            font-size: 1.55rem;
+            line-height: 1.25;
+        }
 
-    .games-grid {
-      display: grid;
-      grid-template-columns: repeat(
-        auto-fit,
-        minmax(280px, 1fr)
-      );
-      gap: 26px;
-    }
+        .game-card-description {
+            flex: 1;
+            margin: 0 0 22px;
+            color: #61747a;
+            line-height: 1.7;
+        }
 
-    /* Game cards */
+        .game-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
 
-    .game-card {
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      background: var(--white);
-      box-shadow: var(--shadow);
-      transition:
-        transform 0.25s ease,
-        box-shadow 0.25s ease;
-    }
+        .game-meta span {
+            padding: 7px 10px;
+            border: 1px solid #dbe8e6;
+            border-radius: 999px;
+            background: #f8fbfa;
+            color: #526a70;
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
 
-    .game-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 20px 45px rgba(15, 47, 61, 0.18);
-    }
+        .game-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            width: 100%;
+            padding: 14px 17px;
+            border-radius: 12px;
+            background: #176d6b;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 700;
+            transition:
+                background 0.2s ease,
+                transform 0.2s ease;
+        }
 
-    .game-image {
-      min-height: 210px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background:
-        radial-gradient(
-          circle at top right,
-          rgba(255, 255, 255, 0.22),
-          transparent 35%
-        ),
-        linear-gradient(
-          135deg,
-          var(--navy),
-          var(--teal)
-        );
-      color: var(--white);
-      font-size: 4.5rem;
-    }
+        .game-link:hover {
+            background: #105a59;
+            transform: translateY(-2px);
+        }
 
-    .game-content {
-      display: flex;
-      flex: 1;
-      flex-direction: column;
-      padding: 24px;
-    }
+        .game-link span {
+            font-size: 1.15rem;
+        }
 
-    .game-category {
-      align-self: flex-start;
-      margin-bottom: 13px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: var(--light-teal);
-      color: var(--teal);
-      font-size: 0.75rem;
-      font-weight: bold;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
+        .coming-soon-card {
+            opacity: 0.78;
+        }
 
-    .game-content h3 {
-      margin: 0 0 12px;
-      color: var(--navy);
-      font-size: 1.45rem;
-      line-height: 1.3;
-    }
+        .coming-soon-card .game-card-visual {
+            background:
+                radial-gradient(
+                    circle at 75% 20%,
+                    rgba(255, 255, 255, 0.22),
+                    transparent 28%
+                ),
+                linear-gradient(
+                    135deg,
+                    #566b70,
+                    #7b9296
+                );
+        }
 
-    .game-content p {
-      flex: 1;
-      margin: 0 0 22px;
-      color: var(--muted);
-      line-height: 1.65;
-    }
+        .coming-soon-label {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 14px 17px;
+            border-radius: 12px;
+            background: #e7eeed;
+            color: #607277;
+            font-weight: 700;
+        }
 
-    .game-details {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 22px;
-    }
+        .games-note {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 30px;
+            margin-top: 54px;
+            padding: 30px;
+            border-radius: 22px;
+            background: #123b46;
+            color: #ffffff;
+        }
 
-    .detail-tag {
-      padding: 5px 9px;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      background: #f8fbfc;
-      color: #486581;
-      font-size: 0.78rem;
-    }
+        .games-note h3 {
+            margin: 0 0 8px;
+            font-size: 1.35rem;
+        }
 
-    .play-button {
-      display: inline-block;
-      align-self: flex-start;
-      padding: 12px 20px;
-      border-radius: 10px;
-      background: var(--teal);
-      color: var(--white);
-      text-decoration: none;
-      font-weight: bold;
-      transition:
-        background 0.2s ease,
-        transform 0.2s ease;
-    }
+        .games-note p {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.76);
+            line-height: 1.65;
+        }
 
-    .play-button:hover {
-      background: #0b5f59;
-      transform: translateY(-2px);
-    }
+        .games-note-icon {
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.1);
+        }
 
-    /* Placeholder card */
+        .games-note-icon svg {
+            width: 34px;
+            height: 34px;
+            fill: none;
+            stroke: #bceee8;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
 
-    .coming-soon {
-      opacity: 0.8;
-    }
+        @media (max-width: 900px) {
+            .games-hero {
+                grid-template-columns: 1fr;
+            }
 
-    .coming-soon .game-image {
-      background:
-        radial-gradient(
-          circle at top right,
-          rgba(255, 255, 255, 0.2),
-          transparent 35%
-        ),
-        linear-gradient(
-          135deg,
-          #486581,
-          #829ab1
-        );
-    }
+            .games-hero-content {
+                padding-bottom: 30px;
+            }
 
-    .coming-soon-button {
-      display: inline-block;
-      align-self: flex-start;
-      padding: 12px 20px;
-      border-radius: 10px;
-      background: #bcccdc;
-      color: #334e68;
-      font-weight: bold;
-    }
+            .games-hero-visual {
+                min-height: 300px;
+                padding-top: 10px;
+            }
 
-    /* Footer */
+            .detective-emblem {
+                width: 270px;
+            }
+        }
 
-    footer {
-      padding: 26px;
-      background: var(--navy);
-      color: #d7eff0;
-      text-align: center;
-      font-size: 0.9rem;
-    }
+        @media (max-width: 640px) {
+            .games-hero {
+                min-height: auto;
+            }
 
-    /* Mobile navigation */
+            .games-hero-content {
+                padding: 60px 24px 25px;
+            }
 
-    .mobile-header {
-      display: none;
-    }
+            .games-hero-visual {
+                min-height: 250px;
+                padding: 20px 24px 50px;
+            }
 
-    @media (max-width: 850px) {
-      .sidebar {
-        display: none;
-      }
+            .detective-emblem {
+                width: 215px;
+            }
 
-      .main-content {
-        margin-left: 0;
-      }
+            .games-library {
+                padding: 60px 20px;
+            }
 
-      .mobile-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 16px 5%;
-        background: var(--navy);
-        color: var(--white);
-      }
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
 
-      .mobile-header strong {
-        font-size: 1rem;
-      }
+            .games-note {
+                grid-template-columns: 1fr;
+            }
 
-      .mobile-header a {
-        color: var(--white);
-        text-decoration: none;
-        font-weight: bold;
-      }
-
-      .page-banner {
-        min-height: 270px;
-        padding: 45px 6%;
-      }
-    }
-
-    @media (max-width: 520px) {
-      .games-section {
-        width: min(92%, 1180px);
-        padding-top: 40px;
-      }
-
-      .games-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .page-banner h2 {
-        font-size: 2.25rem;
-      }
-
-      .game-image {
-        min-height: 180px;
-      }
-    }
-  </style>
+            .games-note-icon {
+                order: -1;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-  <!-- Left navigation bar -->
+    <!-- Left navigation -->
+    <aside class="sidebar">
 
-  <aside class="sidebar">
+        <a class="brand" href="index.html">
+            <span class="brand-icon" aria-hidden="true">
+                <svg viewBox="0 0 64 64">
+                    <path
+                        d="M25 8C13 8 7 20 7 33c0 12 7 22 17 22
+                        7 0 11-5 11-12V23C35 14 31 8 25 8Z"
+                    />
 
-    <div class="brand">
-      <div class="brand-icon" aria-hidden="true">
-        🩺
-      </div>
-
-      <h1>Renal Nursing Hub</h1>
-
-      <p>
-        Learning resources for renal and haemodialysis nursing.
-      </p>
-    </div>
-
-    <nav class="nav-links" aria-label="Main navigation">
-      <a href="index.html">
-        Home
-      </a>
-
-      <a
-        href="games.html"
-        class="active"
-        aria-current="page"
-      >
-        Interactive Games
-      </a>
-
-      <a href="resources.html">
-        Learning Resources
-      </a>
-
-      <a href="about.html">
-        About
-      </a>
-    </nav>
-
-  </aside>
-
-  <!-- Mobile header -->
-
-  <div class="mobile-header">
-    <strong>Renal Nursing Hub</strong>
-
-    <a href="index.html">
-      Home
-    </a>
-  </div>
-
-  <!-- Main page content -->
-
-  <div class="main-content">
-
-    <header class="page-banner">
-
-      <div class="banner-content">
-
-        <span class="eyebrow">
-          Clinical Learning
-        </span>
-
-        <h2>Interactive Games</h2>
-
-        <p>
-          Explore interactive learning activities designed for renal
-          and haemodialysis nurses. Each game combines clinical
-          knowledge with practical decision-making.
-        </p>
-
-      </div>
-
-    </header>
-
-    <main class="games-section">
-
-      <section class="section-heading">
-
-        <h2>Available Games</h2>
-
-        <p>
-          Select a game below to begin. Additional renal nursing
-          activities can be added to this page as your collection grows.
-        </p>
-
-      </section>
-
-      <section
-        class="games-grid"
-        aria-label="Interactive games"
-      >
-
-        <!-- Antihypertensive dialysability game -->
-
-        <article class="game-card">
-
-          <div
-            class="game-image"
-            aria-hidden="true"
-          >
-            🕵️
-          </div>
-
-          <div class="game-content">
-
-            <span class="game-category">
-              Renal Pharmacology
+                    <path
+                        d="M39 8c12 0 18 12 18 25 0 12-7 22-17 22
+                        -7 0-11-5-11-12V23c0-9 4-15 10-15Z"
+                    />
+                </svg>
             </span>
 
-            <h3>
-              Antihypertensives Dialysability
-            </h3>
+            <span>
+                <strong>Renal</strong>
+                <small>Learning Hub</small>
+            </span>
+        </a>
 
-            <p>
-              Take on the role of a dialysis detective and classify
-              antihypertensive medicines according to whether they are
-              dialysable, minimally dialysable or partially dialysable
-              during haemodialysis.
-            </p>
+        <nav class="main-navigation" aria-label="Main navigation">
 
-            <div class="game-details">
-              <span class="detail-tag">
-                Adult learners
-              </span>
-
-              <span class="detail-tag">
-                Experienced nurses
-              </span>
-
-              <span class="detail-tag">
-                38 drug cases
-              </span>
-            </div>
-
-            <a
-              class="play-button"
-              href="games/antihypertensives-dialysability.html"
-            >
-              Open Game
+            <a href="index.html">
+                <span>01</span>
+                Home
             </a>
 
-          </div>
+            <a href="index.html#learning">
+                <span>02</span>
+                Learning Resources
+            </a>
 
-        </article>
+            <a href="index.html#clinical">
+                <span>03</span>
+                Clinical Tools
+            </a>
 
-        <!-- Placeholder for a future game -->
+            <a
+                class="active"
+                href="games.html"
+                aria-current="page"
+            >
+                <span>04</span>
+                Interactive Games
+            </a>
 
-        <article class="game-card coming-soon">
+            <a href="index.html#about">
+                <span>05</span>
+                About
+            </a>
 
-          <div
-            class="game-image"
-            aria-hidden="true"
-          >
-            🧩
-          </div>
+        </nav>
 
-          <div class="game-content">
+        <div class="sidebar-footer">
+            <p>Supporting excellence in kidney care.</p>
+        </div>
 
-            <span class="game-category">
-              Coming Soon
-            </span>
+    </aside>
 
-            <h3>
-              More Interactive Games
-            </h3>
 
-            <p>
-              Additional renal nursing games, quizzes and clinical
-              challenges will be added here in the future.
-            </p>
+    <!-- Main page content -->
+    <main class="main-content">
 
-            <div class="game-details">
-              <span class="detail-tag">
-                New activities
-              </span>
+        <!-- Games banner -->
+        <section class="games-hero">
 
-              <span class="detail-tag">
-                Clinical learning
-              </span>
+            <div class="games-hero-content">
+
+                <p class="eyebrow">
+                    Interactive Clinical Learning
+                </p>
+
+                <h1>
+                    Learn through
+                    <span>clinical investigation.</span>
+                </h1>
+
+                <p class="games-hero-description">
+                    Explore interactive games designed for renal and
+                    haemodialysis professionals. Apply clinical knowledge,
+                    investigate case clues and strengthen decision-making
+                    through active learning.
+                </p>
+
             </div>
 
-            <span class="coming-soon-button">
-              In Development
-            </span>
+            <div class="games-hero-visual" aria-hidden="true">
 
-          </div>
+                <div class="detective-emblem">
 
-        </article>
+                    <svg viewBox="0 0 200 200">
 
-      </section>
+                        <circle
+                            cx="82"
+                            cy="78"
+                            r="45"
+                        />
+
+                        <path
+                            d="M114 111l48 48"
+                        />
+
+                        <path
+                            d="M57 69c8-19 31-28 51-17"
+                        />
+
+                        <path
+                            d="M65 83h34"
+                        />
+
+                        <path
+                            d="M82 66v34"
+                        />
+
+                        <path
+                            d="M72 127c-12 11-18 25-18 42"
+                        />
+
+                        <path
+                            d="M94 127c12 11 18 25 18 42"
+                        />
+
+                    </svg>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Games library -->
+        <section class="games-library">
+
+            <div class="section-heading">
+
+                <div>
+                    <p class="eyebrow">
+                        Game Library
+                    </p>
+
+                    <h2>
+                        Choose an interactive learning activity.
+                    </h2>
+                </div>
+
+                <p>
+                    Each activity combines renal nursing knowledge with
+                    questions, clinical clues and immediate feedback.
+                </p>
+
+            </div>
+
+
+            <div class="games-grid">
+
+                <!-- Antihypertensive game -->
+                <article class="game-card">
+
+                    <div class="game-card-visual">
+
+                        <span class="game-card-number">
+                            CASE 01
+                        </span>
+
+                        <svg
+                            viewBox="0 0 120 120"
+                            aria-hidden="true"
+                        >
+                            <circle
+                                cx="48"
+                                cy="46"
+                                r="27"
+                            />
+
+                            <path
+                                d="M68 67l32 32"
+                            />
+
+                            <path
+                                d="M35 45h26"
+                            />
+
+                            <path
+                                d="M48 32v26"
+                            />
+
+                            <path
+                                d="M28 81c9 8 14 18 14 31"
+                            />
+
+                            <path
+                                d="M67 81c-9 8-14 18-14 31"
+                            />
+                        </svg>
+
+                    </div>
+
+                    <div class="game-card-content">
+
+                        <span class="game-category">
+                            Renal Pharmacology
+                        </span>
+
+                        <h3>
+                            Antihypertensives Dialysability
+                        </h3>
+
+                        <p class="game-card-description">
+                            Take on the role of a dialysis detective and
+                            classify antihypertensive medicines according
+                            to whether they are dialysable, minimally
+                            dialysable or partially dialysable during
+                            haemodialysis.
+                        </p>
+
+                        <div class="game-meta">
+
+                            <span>Adult learners</span>
+
+                            <span>Experienced nurses</span>
+
+                            <span>38 drug cases</span>
+
+                        </div>
+
+                        <a
+                            class="game-link"
+                            href="games/antihypertensives-dialysability.html"
+                        >
+                            Open investigation
+
+                            <span aria-hidden="true">
+                                →
+                            </span>
+                        </a>
+
+                    </div>
+
+                </article>
+
+
+                <!-- Placeholder for future game -->
+                <article class="game-card coming-soon-card">
+
+                    <div class="game-card-visual">
+
+                        <span class="game-card-number">
+                            CASE 02
+                        </span>
+
+                        <svg
+                            viewBox="0 0 120 120"
+                            aria-hidden="true"
+                        >
+                            <path
+                                d="M28 30h64v60H28z"
+                            />
+
+                            <path
+                                d="M42 48h36"
+                            />
+
+                            <path
+                                d="M42 62h25"
+                            />
+
+                            <path
+                                d="M42 76h31"
+                            />
+
+                            <path
+                                d="M52 20v20"
+                            />
+
+                            <path
+                                d="M68 20v20"
+                            />
+                        </svg>
+
+                    </div>
+
+                    <div class="game-card-content">
+
+                        <span class="game-category">
+                            Coming Soon
+                        </span>
+
+                        <h3>
+                            Future Clinical Investigation
+                        </h3>
+
+                        <p class="game-card-description">
+                            Additional renal nursing games, clinical
+                            scenarios and interactive challenges will
+                            be added to this library.
+                        </p>
+
+                        <div class="game-meta">
+
+                            <span>Clinical learning</span>
+
+                            <span>New activity</span>
+
+                        </div>
+
+                        <span class="coming-soon-label">
+                            In development
+                        </span>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+
+            <div class="games-note">
+
+                <div>
+
+                    <h3>
+                        Educational use
+                    </h3>
+
+                    <p>
+                        These interactive activities support learning
+                        and discussion. Clinical decisions should remain
+                        consistent with current references, local policies
+                        and individual patient assessment.
+                    </p>
+
+                </div>
+
+                <div
+                    class="games-note-icon"
+                    aria-hidden="true"
+                >
+                    <svg viewBox="0 0 24 24">
+
+                        <path
+                            d="M12 3v18"
+                        />
+
+                        <path
+                            d="M3 12h18"
+                        />
+
+                        <circle
+                            cx="12"
+                            cy="12"
+                            r="9"
+                        />
+
+                    </svg>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <footer class="site-footer">
+
+            <p>
+                © <span id="current-year">2026</span>
+                Renal Learning Hub
+            </p>
+
+            <p>
+                Education for better kidney care.
+            </p>
+
+        </footer>
 
     </main>
 
-    <footer>
-      Renal Nursing Learning Hub
-    </footer>
 
-  </div>
+    <script>
+        document.getElementById("current-year").textContent =
+            new Date().getFullYear();
+    </script>
 
 </body>
 </html>
+```
