@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dialysis Detective: The Antihypertensive Case Files</title>
+  <style>
+    :root{
+      --bg:#0d1117;
+      --panel:#161b22;
+      --panel2:#1f2630;
+      --gold:#d6a84b;
+      --gold2:#f2cf77;
+      --text:#f3f4f6;
+      --muted:#aab2bf;
+      --danger:#e05d5d;
+      --success:#56c596;
+      --blue:#5aa9e6;
+      --border:#384150;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Georgia, "Times New Roman", serif;
+      background:
+        radial-gradient(circle at top, rgba(214,168,75,.08), transparent 30%),
+        linear-gradient(135deg,#090c10,#121821 55%,#090c10);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    .wrap{
+      width:min(1050px,92%);
+      margin:0 auto;
+      padding:28px 0 50px;
+    }
+
+    .masthead{
+      text-align:center;
+      margin-bottom:24px;
+    }
+
+    .badge{
+      display:inline-block;
+      border:1px solid var(--gold);
+      color:var(--gold2);
+      padding:7px 12px;
+      letter-spacing:2px;
+      font-size:.75rem;
+      text-transform:uppercase;
+      border-radius:999px;
+      background:rgba(214,168,75,.08);
+    }
+
+    h1{
+      margin:14px 0 6px;
+      font-size:clamp(2rem,5vw,4rem);
+      color:var(--gold2);
+      text-shadow:0 2px 18px rgba(214,168,75,.18);
+    }
+
+    .subtitle{
+      color:var(--muted);
+      max-width:780px;
+      margin:0 auto;
+      line-height:1.6;
+    }
+
+    .panel{
+      background:linear-gradient(180deg,rgba(31,38,48,.96),rgba(20,25,32,.96));
+      border:1px solid var(--border);
+      border-radius:18px;
+      box-shadow:0 18px 60px rgba(0,0,0,.35);
+      padding:24px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:18px;
+    }
+
+    @media(max-width:760px){
+      .grid{grid-template-columns:1fr}
+    }
+
+    .case-note{
+      background:#f0e2bd;
+      color:#2c2418;
+      border-radius:10px;
+      padding:18px;
+      transform:rotate(-.3deg);
+      box-shadow:0 10px 30px rgba(0,0,0,.3);
+      line-height:1.55;
+    }
+
+    .case-note h2{
+      margin-top:0;
+      font-size:1.35rem;
+    }
+
+    label{
+      display:block;
+      margin-bottom:8px;
+      color:var(--gold2);
+      font-weight:bold;
+    }
+
+    select,button{
+      width:100%;
+      padding:13px 14px;
+      border-radius:10px;
+      border:1px solid var(--border);
+      font-size:1rem;
+    }
+
+    select{
+      background:#0f141b;
+      color:var(--text);
+      margin-bottom:14px;
+    }
+
+    button{
+      cursor:pointer;
+      background:linear-gradient(180deg,var(--gold2),var(--gold));
+      color:#1f180d;
+      font-weight:bold;
+      transition:.2s ease;
+    }
+
+    button:hover{transform:translateY(-1px);filter:brightness(1.05)}
+    button:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+    .hidden{display:none!important}
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+      color:var(--muted);
+      font-size:.95rem;
+    }
+
+    .progress{
+      height:9px;
+      background:#0d1117;
+      border-radius:99px;
+      overflow:hidden;
+      border:1px solid var(--border);
+      margin-bottom:24px;
+    }
+
+    .progress > div{
+      height:100%;
+      width:0;
+      background:linear-gradient(90deg,var(--gold),var(--gold2));
+      transition:width .3s ease;
+    }
+
+    .file-tag{
+      color:var(--gold2);
+      text-transform:uppercase;
+      letter-spacing:1px;
+      font-size:.78rem;
+      margin-bottom:8px;
+    }
+
+    .question{
+      font-size:clamp(1.25rem,3vw,1.7rem);
+      line-height:1.45;
+      margin-bottom:18px;
+    }
+
+    .options{
+      display:grid;
+      gap:12px;
+    }
+
+    .option{
+      text-align:left;
+      background:#111720;
+      color:var(--text);
+      border:1px solid var(--border);
+      padding:14px;
+      border-radius:12px;
+    }
+
+    .option:hover{
+      border-color:var(--gold);
+      background:#18202b;
+    }
+
+    .option.correct{
+      border-color:var(--success);
+      background:rgba(86,197,150,.14);
+      color:#d8fff0;
+    }
+
+    .option.wrong{
+      border-color:var(--danger);
+      background:rgba(224,93,93,.14);
+      color:#ffe0e0;
+    }
+
+    .feedback{
+      margin-top:18px;
+      padding:16px;
+      border-left:4px solid var(--blue);
+      background:rgba(90,169,230,.1);
+      line-height:1.55;
+      border-radius:8px;
+    }
+
+    .next-btn{
+      margin-top:16px;
+    }
+
+    .score-big{
+      font-size:3.4rem;
+      color:var(--gold2);
+      margin:8px 0;
+    }
+
+    .review-table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:18px;
+      font-size:.95rem;
+    }
+
+    .review-table th,.review-table td{
+      border-bottom:1px solid var(--border);
+      padding:10px 8px;
+      text-align:left;
+      vertical-align:top;
+    }
+
+    .review-table th{color:var(--gold2)}
+    .pill{
+      display:inline-block;
+      padding:3px 8px;
+      border-radius:999px;
+      font-size:.76rem;
+      font-weight:bold;
+    }
+    .pill.good{background:rgba(86,197,150,.15);color:#9ff0ca}
+    .pill.bad{background:rgba(224,93,93,.15);color:#ffb3b3}
+    .pill.partial{background:rgba(214,168,75,.15);color:#f5d889}
+
+    .disclaimer{
+      margin-top:18px;
+      color:var(--muted);
+      font-size:.85rem;
+      line-height:1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="masthead">
+      <span class="badge">Renal Pharmacology Investigation Unit</span>
+      <h1>Dialysis Detective</h1>
+      <p class="subtitle">
+        Solve the antihypertensive case files. Decide whether each drug is significantly dialysable,
+        non-dialysable/minimally dialysable, or partially/variably dialysable.
+      </p>
+    </header>
+
+    <section id="startScreen" class="panel">
+      <div class="grid">
+        <div class="case-note">
+          <h2>Case Briefing</h2>
+          <p>
+            A medication chart has been recovered from the dialysis unit. Your task is to classify each
+            antihypertensive according to whether conventional high-flux haemodialysis meaningfully removes it.
+          </p>
+          <p>
+            You are the lead investigator. Correct classifications earn evidence points. Incorrect answers reveal
+            a clinical clue before the case continues.
+          </p>
+          <p><strong>Full Case File mode covers every drug in the database.</strong></p>
+        </div>
+
+        <div>
+          <label for="questionCount">Select number of case files</label>
+          <select id="questionCount">
+            <option value="10">10 questions — Rapid briefing</option>
+            <option value="20">20 questions — Standard investigation</option>
+            <option value="30">30 questions — Advanced investigation</option>
+            <option value="all">All questions — Full case file</option>
+          </select>
+
+          <label for="difficulty">Case difficulty</label>
+          <select id="difficulty">
+            <option value="standard">Standard — Identify the category</option>
+            <option value="expert">Expert — Clinical scenario clues</option>
+          </select>
+
+          <button id="startBtn">Open the Case</button>
+
+          <p class="disclaimer">
+            Educational use only. Dialysability can vary with dialysis membrane, blood and dialysate flow,
+            treatment duration, protein binding and residual renal function. Local protocols and current drug
+            references should guide clinical decisions.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="gameScreen" class="panel hidden">
+      <div class="topbar">
+        <div id="caseCounter">Case 1 of 10</div>
+        <div id="scoreText">Evidence points: 0</div>
+      </div>
+      <div class="progress"><div id="progressBar"></div></div>
+
+      <div class="file-tag" id="caseTag">Case File</div>
+      <div class="question" id="questionText"></div>
+      <div class="options" id="options"></div>
+      <div id="feedback" class="feedback hidden"></div>
+      <button id="nextBtn" class="next-btn hidden">Proceed to Next Case</button>
+    </section>
+
+    <section id="resultScreen" class="panel hidden">
+      <div class="file-tag">Investigation Closed</div>
+      <h2>Your Final Evidence Score</h2>
+      <div class="score-big" id="finalScore"></div>
+      <p id="rankText"></p>
+
+      <h3>Case Review</h3>
+      <div style="overflow-x:auto">
+        <table class="review-table">
+          <thead>
+            <tr>
+              <th>Drug</th>
+              <th>Correct classification</th>
+              <th>Your result</th>
+              <th>Key clue</th>
+            </tr>
+          </thead>
+          <tbody id="reviewBody"></tbody>
+        </table>
+      </div>
+
+      <button id="restartBtn" style="margin-top:20px">Start a New Investigation</button>
+    </section>
+  </div>
+
+<script>
+const drugBank = [
+  {drug:"Atenolol", cls:"Dialysable", className:"Beta-blocker", clue:"Low protein binding and renal elimination make it highly dialysable; it is often scheduled after haemodialysis."},
+  {drug:"Metoprolol", cls:"Dialysable", className:"Beta-blocker", clue:"Modern high-flux dialysis can remove a clinically meaningful amount."},
+  {drug:"Acebutolol", cls:"Dialysable", className:"Beta-blocker", clue:"The parent drug is dialysable, while its active metabolite may accumulate in renal failure."},
+  {drug:"Lisinopril", cls:"Dialysable", className:"ACE inhibitor", clue:"It is significantly removed during haemodialysis and is commonly dosed after treatment."},
+  {drug:"Enalapril / enalaprilat", cls:"Dialysable", className:"ACE inhibitor", clue:"The active metabolite enalaprilat is renally eliminated and dialysable."},
+  {drug:"Perindopril / perindoprilat", cls:"Dialysable", className:"ACE inhibitor", clue:"Perindoprilat can accumulate in renal failure and is removed by dialysis."},
+  {drug:"Captopril", cls:"Dialysable", className:"ACE inhibitor", clue:"Its relatively low molecular weight and lower protein binding support dialysis clearance."},
+  {drug:"Ramipril / ramiprilat", cls:"Partial / variable", className:"ACE inhibitor", clue:"Some removal occurs, but the degree is variable and less predictable than with lisinopril."},
+
+  {drug:"Amlodipine", cls:"Non-dialysable / minimal", className:"Calcium-channel blocker", clue:"It is highly protein bound and is not meaningfully removed by haemodialysis."},
+  {drug:"Nifedipine", cls:"Non-dialysable / minimal", className:"Calcium-channel blocker", clue:"High protein binding limits dialyser clearance."},
+  {drug:"Felodipine", cls:"Non-dialysable / minimal", className:"Calcium-channel blocker", clue:"Its high protein binding makes clinically important dialysis removal unlikely."},
+  {drug:"Lercanidipine", cls:"Non-dialysable / minimal", className:"Calcium-channel blocker", clue:"It is highly lipophilic and protein bound."},
+  {drug:"Diltiazem", cls:"Non-dialysable / minimal", className:"Calcium-channel blocker", clue:"Extensive protein binding and tissue distribution limit dialysis removal."},
+  {drug:"Verapamil", cls:"Non-dialysable / minimal", className:"Calcium-channel blocker", clue:"Large distribution volume and protein binding make dialysis removal minimal."},
+
+  {drug:"Losartan", cls:"Non-dialysable / minimal", className:"Angiotensin receptor blocker", clue:"High protein binding prevents meaningful haemodialysis clearance."},
+  {drug:"Valsartan", cls:"Non-dialysable / minimal", className:"Angiotensin receptor blocker", clue:"It is strongly protein bound and not significantly dialysed."},
+  {drug:"Irbesartan", cls:"Non-dialysable / minimal", className:"Angiotensin receptor blocker", clue:"High protein binding makes removal by haemodialysis negligible."},
+  {drug:"Candesartan", cls:"Non-dialysable / minimal", className:"Angiotensin receptor blocker", clue:"It is highly protein bound and minimally removed."},
+  {drug:"Telmisartan", cls:"Non-dialysable / minimal", className:"Angiotensin receptor blocker", clue:"Very high protein binding and lipophilicity limit removal."},
+  {drug:"Olmesartan", cls:"Non-dialysable / minimal", className:"Angiotensin receptor blocker", clue:"It is highly protein bound and not meaningfully dialysed."},
+  {drug:"Azilsartan", cls:"Non-dialysable / minimal", className:"Angiotensin receptor blocker", clue:"Strong protein binding makes significant dialysis clearance unlikely."},
+
+  {drug:"Carvedilol", cls:"Non-dialysable / minimal", className:"Beta-blocker", clue:"High protein binding and hepatic metabolism make it essentially non-dialysable."},
+  {drug:"Propranolol", cls:"Non-dialysable / minimal", className:"Beta-blocker", clue:"Its high protein binding and large distribution volume limit haemodialysis removal."},
+  {drug:"Labetalol", cls:"Non-dialysable / minimal", className:"Alpha/beta-blocker", clue:"Only minimal removal occurs because of protein binding and hepatic metabolism."},
+  {drug:"Nebivolol", cls:"Non-dialysable / minimal", className:"Beta-blocker", clue:"Dialysis removal is minimal because the drug is highly protein bound."},
+  {drug:"Bisoprolol", cls:"Partial / variable", className:"Beta-blocker", clue:"It may be partially removed by high-flux haemodialysis; it is less dialysable than atenolol or metoprolol."},
+
+  {drug:"Hydralazine", cls:"Non-dialysable / minimal", className:"Direct vasodilator", clue:"It is not removed to a clinically meaningful extent during routine haemodialysis."},
+  {drug:"Minoxidil", cls:"Non-dialysable / minimal", className:"Direct vasodilator", clue:"The parent drug is minimally dialysable, although metabolites may rely on renal clearance."},
+  {drug:"Clonidine", cls:"Non-dialysable / minimal", className:"Centrally acting agent", clue:"Only a small amount is removed during dialysis."},
+  {drug:"Methyldopa", cls:"Partial / variable", className:"Centrally acting agent", clue:"Some removal can occur, so it is best treated as partially dialysable."},
+  {drug:"Doxazosin", cls:"Non-dialysable / minimal", className:"Alpha-1 blocker", clue:"High protein binding makes dialysis clearance negligible."},
+  {drug:"Prazosin", cls:"Non-dialysable / minimal", className:"Alpha-1 blocker", clue:"It is highly protein bound and not significantly removed."},
+  {drug:"Terazosin", cls:"Non-dialysable / minimal", className:"Alpha-1 blocker", clue:"Dialysis does not meaningfully remove it."},
+  {drug:"Spironolactone", cls:"Non-dialysable / minimal", className:"Mineralocorticoid receptor antagonist", clue:"The parent drug and active metabolites are highly protein bound and not effectively dialysed."},
+  {drug:"Eplerenone", cls:"Non-dialysable / minimal", className:"Mineralocorticoid receptor antagonist", clue:"Haemodialysis does not provide clinically meaningful removal."},
+  {drug:"Hydrochlorothiazide", cls:"Non-dialysable / minimal", className:"Thiazide diuretic", clue:"Dialysis removal is not usually clinically important, and effect may be limited in anuric patients."},
+  {drug:"Indapamide", cls:"Non-dialysable / minimal", className:"Thiazide-like diuretic", clue:"It is not meaningfully removed and has reduced utility without residual urine output."},
+  {drug:"Furosemide", cls:"Non-dialysable / minimal", className:"Loop diuretic", clue:"High protein binding prevents efficient dialysis removal; benefit depends on residual urine output."}
+];
+
+const categories = ["Dialysable","Non-dialysable / minimal","Partial / variable"];
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let answers = [];
+let locked = false;
+let difficulty = "standard";
+
+const startScreen = document.getElementById("startScreen");
+const gameScreen = document.getElementById("gameScreen");
+const resultScreen = document.getElementById("resultScreen");
+const questionText = document.getElementById("questionText");
+const optionsEl = document.getElementById("options");
+const feedbackEl = document.getElementById("feedback");
+const nextBtn = document.getElementById("nextBtn");
+const progressBar = document.getElementById("progressBar");
+const caseCounter = document.getElementById("caseCounter");
+const scoreText = document.getElementById("scoreText");
+const caseTag = document.getElementById("caseTag");
+
+function shuffle(arr){
+  return [...arr].sort(()=>Math.random()-.5);
+}
+
+function buildQuestionText(item){
+  if(difficulty === "standard"){
+    return `Classify <strong>${item.drug}</strong> (${item.className}) according to haemodialysis removal.`;
+  }
+
+  const scenarios = {
+    "Dialysable": `A patient receiving <strong>${item.drug}</strong> undergoes high-flux haemodialysis. The team is reviewing whether treatment could reduce circulating drug levels enough to affect dosing.`,
+    "Non-dialysable / minimal": `A patient receiving <strong>${item.drug}</strong> has completed haemodialysis. The nurse educator asks whether a clinically important amount is likely to have crossed the dialyser membrane.`,
+    "Partial / variable": `A patient receiving <strong>${item.drug}</strong> is on high-flux haemodialysis. Available evidence suggests some removal may occur, but not consistently enough for a simple yes-or-no classification.`
+  };
+  return scenarios[item.cls] + "<br><br>What is the best classification?";
+}
+
+function startGame(){
+  const countVal = document.getElementById("questionCount").value;
+  difficulty = document.getElementById("difficulty").value;
+  const count = countVal === "all" ? drugBank.length : Number(countVal);
+
+  currentQuestions = shuffle(drugBank).slice(0,count);
+  currentIndex = 0;
+  score = 0;
+  answers = [];
+
+  startScreen.classList.add("hidden");
+  resultScreen.classList.add("hidden");
+  gameScreen.classList.remove("hidden");
+  renderQuestion();
+}
+
+function renderQuestion(){
+  locked = false;
+  const item = currentQuestions[currentIndex];
+
+  caseCounter.textContent = `Case ${currentIndex+1} of ${currentQuestions.length}`;
+  scoreText.textContent = `Evidence points: ${score}`;
+  progressBar.style.width = `${(currentIndex/currentQuestions.length)*100}%`;
+  caseTag.textContent = `Case File ${String(currentIndex+1).padStart(2,"0")} • ${item.className}`;
+  questionText.innerHTML = buildQuestionText(item);
+
+  feedbackEl.classList.add("hidden");
+  nextBtn.classList.add("hidden");
+  optionsEl.innerHTML = "";
+
+  shuffle(categories).forEach(cat=>{
+    const btn = document.createElement("button");
+    btn.className = "option";
+    btn.textContent = cat;
+    btn.onclick = ()=>selectAnswer(cat, btn);
+    optionsEl.appendChild(btn);
+  });
+}
+
+function selectAnswer(selected, clickedButton){
+  if(locked) return;
+  locked = true;
+
+  const item = currentQuestions[currentIndex];
+  const correct = selected === item.cls;
+  if(correct) score++;
+
+  [...optionsEl.children].forEach(btn=>{
+    btn.disabled = true;
+    if(btn.textContent === item.cls) btn.classList.add("correct");
+    if(btn === clickedButton && !correct) btn.classList.add("wrong");
+  });
+
+  feedbackEl.classList.remove("hidden");
+  feedbackEl.innerHTML = `
+    <strong>${correct ? "Evidence confirmed." : "Clue mismatch."}</strong><br>
+    Correct classification: <strong>${item.cls}</strong>.<br>
+    ${item.clue}
+  `;
+
+  answers.push({...item, selected, correct});
+  scoreText.textContent = `Evidence points: ${score}`;
+  nextBtn.textContent = currentIndex === currentQuestions.length-1 ? "Close the Investigation" : "Proceed to Next Case";
+  nextBtn.classList.remove("hidden");
+}
+
+function nextQuestion(){
+  currentIndex++;
+  if(currentIndex >= currentQuestions.length){
+    showResults();
+  }else{
+    renderQuestion();
+  }
+}
+
+function showResults(){
+  gameScreen.classList.add("hidden");
+  resultScreen.classList.remove("hidden");
+  progressBar.style.width = "100%";
+
+  const percent = Math.round((score/currentQuestions.length)*100);
+  document.getElementById("finalScore").textContent = `${score}/${currentQuestions.length} (${percent}%)`;
+
+  let rank = "";
+  if(percent >= 90) rank = "Chief Dialysis Detective — exceptional command of antihypertensive dialysability.";
+  else if(percent >= 75) rank = "Senior Clinical Investigator — strong performance with only a few unresolved clues.";
+  else if(percent >= 60) rank = "Case Officer — sound foundation, but several files need review.";
+  else rank = "Investigator in Training — revisit the evidence and reopen the case.";
+  document.getElementById("rankText").textContent = rank;
+
+  const body = document.getElementById("reviewBody");
+  body.innerHTML = "";
+  answers.forEach(a=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><strong>${a.drug}</strong><br><span style="color:#aab2bf">${a.className}</span></td>
+      <td><span class="pill ${a.cls==="Dialysable"?"good":a.cls==="Partial / variable"?"partial":"bad"}">${a.cls}</span></td>
+      <td>${a.correct ? "Correct" : `Incorrect: ${a.selected}`}</td>
+      <td>${a.clue}</td>
+    `;
+    body.appendChild(tr);
+  });
+}
+
+document.getElementById("startBtn").addEventListener("click",startGame);
+nextBtn.addEventListener("click",nextQuestion);
+document.getElementById("restartBtn").addEventListener("click",()=>{
+  resultScreen.classList.add("hidden");
+  startScreen.classList.remove("hidden");
+});
+</script>
+</body>
+</html>
